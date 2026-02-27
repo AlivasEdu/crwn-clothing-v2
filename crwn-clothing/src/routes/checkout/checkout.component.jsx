@@ -1,41 +1,42 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
-import { CartContext } from '../../contexts/cart.context';
+import { CartContext } from "../../contexts/cart.context";
 
-import QuantitySelector from '../../components/quantity-selector/quantity-selector.component';
+import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 
-import './checkout.styles.scss';
+import "./checkout.styles.scss";
 
 const Checkout = () => {
-    const { cartItems, clearItem } = useContext(CartContext);
-    return (
-        <div className='checkout-container'>
-            <div className='checkout-header'>
-                <span>Product</span>
-                <span>Description</span>
-                <span>Quantity</span>
-                <span>Price</span>
-                <span>Remove</span>
-            </div>
-            {cartItems.map(cartItem => {
-                const { id, name, imageUrl, price, quantity } = cartItem;
-                return (
-                    <div key={id} className='checkout-item'>
-                        <div className='image-container'>
-                            <img src={imageUrl} alt={`${name}`} />
-                        </div>
-                        <span className='name'>{name}</span>
-                        <QuantitySelector item={cartItem} />
-                        <span className='price'>{price * quantity}</span>
-                        <span className='remove-button' onClick={() => clearItem(cartItem)}>&#10005;</span>
-                    </div>
-                );
-            })}
-            <div className='total'>
-                Total: {cartItems.reduce((total, cartItem) => total + cartItem.price * cartItem.quantity, 0)}
-            </div>
+  const { cartItems, cartTotal } = useContext(CartContext);
+  return (
+    <div className="checkout-container">
+      <div className="checkout-header">
+        <div className="header-block">
+          <span>Product</span>
         </div>
-    );
-}
+        <div className="header-block">
+          <span>Description</span>
+        </div>
+
+        <div className="header-block">
+          <span>Quantity</span>
+        </div>
+        <div className="header-block">
+          <span>Price</span>
+        </div>
+        <div className="header-block">
+          <span>Remove</span>
+        </div>
+      </div>
+      {cartItems.map((cartItem) => (
+        <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+      ))}
+      <span className="total">
+        Total: $
+        {cartTotal}
+      </span>
+    </div>
+  );
+};
 
 export default Checkout;

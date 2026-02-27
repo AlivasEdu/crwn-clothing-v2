@@ -28,9 +28,8 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
   });
 };
 
-const removeCartItemAll = (cartItems, cartItemToRemove) => {
-  return cartItems.filter((cartItem) => cartItem.id !== cartItemToRemove.id);
-};
+const clearCartItem = (cartItems, cartItemToClear) =>
+  cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
 
 //as the actual value you want to access
 export const CartContext = createContext({
@@ -40,19 +39,33 @@ export const CartContext = createContext({
   addItemToCart: () => {},
   cartCount: 0,
   setCartCount: () => {},
+  cartTotal: 0,
+  setCartTotal: () => {},
+   removeItemFromCart: () => {},
+   clearItemFromCart: () => {},
+   clearCart: () => {}
 });
 
 export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
-
+  const [cartTotal, setCartTotal] = useState(0);
+  
   useEffect(() => {
     const newCartCount = cartItems.reduce(
       (total, cartItem) => total + cartItem.quantity,
       0,
     );
     setCartCount(newCartCount);
+  }, [cartItems]);
+
+  useEffect(() => {
+    const newCartTotal = cartItems.reduce(
+      (total, cartItem) => total + (cartItem.price * cartItem.quantity),
+      0,
+    );
+    setCartTotal(newCartTotal);
   }, [cartItems]);
 
   const addItemToCart = (productToAdd) => {
@@ -63,10 +76,10 @@ export const CartProvider = ({ children }) => {
     setCartItems(removeCartItem(cartItems, cartItemToRemove));
   };
 
-  const clearItem = (cartItemToRemove) => {
-    setCartItems(removeCartItemAll(cartItems, cartItemToRemove));
+  const clearItemFromCart = (cartItemToClear) => {
+    setCartItems(clearCartItem(cartItems, cartItemToClear));
   };
-  
+
   const clearCart = () => {
     setCartItems([]);
   };
@@ -76,10 +89,11 @@ export const CartProvider = ({ children }) => {
     setIsCartOpen,
     addItemToCart,
     removeItemFromCart,
-    clearItem,
+    clearItemFromCart,
     clearCart,
     cartItems,
     cartCount,
+    cartTotal
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
