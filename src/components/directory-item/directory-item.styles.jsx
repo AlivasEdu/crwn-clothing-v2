@@ -5,9 +5,7 @@ export const BackgroundImage = styled.div`
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
-
-  background-image: ${({imageUrl}) => `url(${imageUrl})`};
+  background-image: ${({ $imageUrl }) => `url(${$imageUrl})`};
 `;
 
 export const Body = styled.div`
@@ -52,7 +50,7 @@ export const DirectoryItemContainer = styled.div`
 
     ${BackgroundImage} {
       transform: scale(1.1);
-      
+      transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
     }
 
     ${Body} {
