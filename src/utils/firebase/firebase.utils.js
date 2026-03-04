@@ -42,7 +42,10 @@ provider.setCustomParameters({
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = async () => {
+  const response = await signInWithPopup(auth, provider);
+  return response.user;
+}
 export const db = getFirestore();
 
 export const addCollectionAndDocuments = async (
@@ -60,8 +63,8 @@ export const addCollectionAndDocuments = async (
   console.log("done");
 };
 
-export const getCategoriesAndDocuments = async () => {
-    const collectionRef = collection(db, "categories");
+export const getCategoriesAndDocuments = async (categories) => {
+    const collectionRef = collection(db, categories);
     const q = query(collectionRef);
 
     const querySnapshot = await getDocs(q);
@@ -93,20 +96,39 @@ export const createUserDocumentFromAuth = async (
     }
   }
 
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
-  if (!email || !password) return;
-  return await createUserWithEmailAndPassword(auth, email, password);
+  if (!email || !password) {
+    throw new Error('Missing credentials');
+  }
+  const response = await createUserWithEmailAndPassword(auth, email, password);
+  return response.user;
 };
 
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
-  if (!email || !password) return;
-  return await signInWithEmailAndPassword(auth, email, password);
+  if (!email || !password) {
+    throw new Error('Missing credentials');
+  }
+  const response = await signInWithEmailAndPassword(auth, email, password);
+  return response.user;
 };
 
 export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  })
+}
