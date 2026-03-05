@@ -94,7 +94,7 @@ export function* signUpUser({ payload: { email, password, displayName } }) {
       email,
       password,
     );
-    yield put(signUpSuccess(userAuth, displayName));
+    yield put(signUpSuccess(userAuth, {displayName}));
   } catch (error) {
     if (error.code === "auth/email-already-in-use") {
       yield put(signUpFailed("Email Already in Use"));
@@ -104,9 +104,8 @@ export function* signUpUser({ payload: { email, password, displayName } }) {
   }
 }
 
-export function* signInAfterSignUp(action) {
-  console.log('SIGN UP SUCCESS action: ', action);
-  yield call(getSnapshotFromUserAuth, action.payload.user, { displayName: action.payload.displayName });
+export function* signInAfterSignUp({payload: {user, additionalDetails}}) {
+  yield call(getSnapshotFromUserAuth, user, additionalDetails);
 }
 
 export function* onCheckUserSession() {

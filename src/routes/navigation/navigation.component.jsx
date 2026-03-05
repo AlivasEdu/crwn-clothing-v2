@@ -18,7 +18,7 @@ const Navigation = () => {
   const isCartOpen = useSelector(selectIsCartOpen);
   const dispatch = useDispatch();
 
-  const signOutHandler = async () => {
+  const signOutHandler = () => {
     dispatch(signOutStart());
   };
   return (

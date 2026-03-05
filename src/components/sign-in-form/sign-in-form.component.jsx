@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 
 import FormInput from "../form-input/form-input.component";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
 import { SignUpContainer, ButtonsContainer } from "./sign-in-form.styles";
 import { emailSignInStart, googleSignInStart } from "../../store/user/user.action";
+import { selectUserError } from "../../store/user/user.selector";
 
 const defaultFormFields = {
   email: "",
@@ -13,9 +15,17 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
+  const { error } = useSelector(selectUserError);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+  if (error) {
+    alert(error);
+  }
+}, [error]);
+
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
