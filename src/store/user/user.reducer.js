@@ -1,5 +1,11 @@
 import { USER_ACTION_TYPES } from "./user.types";
 
+const INITIAL_STATE = {
+    currentUser: null,
+    isLoading: false,
+    error: null,
+};
+
 export const userReducer = (state = INITIAL_STATE, action = {}) => {
     const { type, payload } = action;
     
@@ -32,10 +38,4 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
         default:
             return state;
     }
-};
-
-const INITIAL_STATE = {
-    currentUser: null,
-    isLoading: false,
-    error: null,
 };

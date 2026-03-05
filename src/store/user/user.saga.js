@@ -21,8 +21,6 @@ import {
 } from "../../utils/firebase/firebase.utils";
 
 export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
-  console.log(userAuth);
-  console.log(additionalDetails);
   try {
     const userSnapshot = yield call(
       createUserDocumentFromAuth,
@@ -57,15 +55,15 @@ export function* signInUserWithEmailAndPassword({
     yield call(getSnapshotFromUserAuth, userAuth);
   } catch (error) {
     switch (error.code) {
-        case "auth/wrong-password":
-          yield call(signInFailed("Incorrect password for email"));
-          break;
-        case "auth/user-not-found":
-          yield call(signInFailed("No user associated with this email"));
-          break;
-        default:
-          yield call(signInFailed(error));
-      }
+      case "auth/wrong-password":
+        yield put(signInFailed("Incorrect password for email"));
+        break;
+      case "auth/user-not-found":
+        yield put(signInFailed("No user associated with this email"));
+        break;
+      default:
+        yield put(signInFailed(error));
+    }
   }
 }
 
@@ -94,7 +92,7 @@ export function* signUpUser({ payload: { email, password, displayName } }) {
       email,
       password,
     );
-    yield put(signUpSuccess(userAuth, {displayName}));
+    yield put(signUpSuccess(userAuth, { displayName }));
   } catch (error) {
     if (error.code === "auth/email-already-in-use") {
       yield put(signUpFailed("Email Already in Use"));
@@ -104,7 +102,7 @@ export function* signUpUser({ payload: { email, password, displayName } }) {
   }
 }
 
-export function* signInAfterSignUp({payload: {user, additionalDetails}}) {
+export function* signInAfterSignUp({ payload: { user, additionalDetails } }) {
   yield call(getSnapshotFromUserAuth, user, additionalDetails);
 }
 

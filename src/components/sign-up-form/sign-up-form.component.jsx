@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { signUpStart } from "../../store/user/user.action";
-import { selectUserError } from "../../store/user/user.selector";
 
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
@@ -18,16 +17,9 @@ const defaultFormFields = {
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
-  const { error } = useSelector(selectUserError);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
-    useEffect(() => {
-    if (error) {
-      alert(error);
-    }
-  }, [error]);
-  
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
