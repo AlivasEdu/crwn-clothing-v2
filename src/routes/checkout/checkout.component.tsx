@@ -1,3 +1,4 @@
+import { FC, memo } from 'react';
 import { useSelector } from "react-redux";
 
 import { selectCartItems, selectCartTotal } from "../../store/cart/cart.selector";
@@ -12,7 +13,7 @@ import {
   Total,
 } from "./checkout.styles";
 
-const Checkout = () => {
+const Checkout: FC = () => {
   const cartItems = useSelector(selectCartItems);
   const cartTotal = useSelector(selectCartTotal);
   return (
