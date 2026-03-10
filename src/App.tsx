@@ -1,10 +1,11 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 
 import { Routes, Route } from "react-router-dom";
 
 import Spinner from "./components/spinner/spinner.component";
 import { checkUserSession } from "./store/user/user.action";
+import { GlobalStyle } from "./global.styles";
 
 const Home = lazy(() => import("./routes/home/home.component"));
 const Authentication = lazy(
@@ -16,13 +17,14 @@ const Navigation = lazy(
 );
 const Checkout = lazy(() => import("./routes/checkout/checkout.component"));
 
-const App = () => {
+const App = (): ReactElement => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(checkUserSession());
   }, []);
   return (
     <Suspense fallback={<Spinner />}>
+      <GlobalStyle />
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<Home />} />

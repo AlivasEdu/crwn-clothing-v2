@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-import { BaseButton, GoogleSignInButton, InvertedButton } from '../button/button.styles'
+import {
+  BaseButton,
+  GoogleSignInButton,
+  InvertedButton,
+} from "../button/button.styles";
 
 export const ProductCardContainer = styled.div`
   width: 100%;
@@ -37,6 +41,35 @@ export const ProductCardContainer = styled.div`
       display: flex;
     }
   }
+
+  @media screen and (max-width: 800px) {
+    width: 40vw;
+
+    ${BaseButton},
+    ${GoogleSignInButton},
+    ${InvertedButton} {
+      display: block;
+      opacity: 0.9;
+      min-width: unset;
+      padding: 0 10px;
+
+      &:hover {
+        img {
+          opacity: unset;
+        }
+
+        ${BaseButton},
+        ${GoogleSignInButton},
+        ${InvertedButton} {
+          opacity: unset;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    width: 80vw;
+  }
 `;
 
 export const Footer = styled.div`
@@ -45,7 +78,7 @@ export const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 18px;
-`; 
+`;
 
 export const Name = styled.span`
   width: 90%;
