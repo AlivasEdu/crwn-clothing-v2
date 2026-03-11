@@ -7,13 +7,13 @@ describe("button tests", () => {
     render(<Button/>);
 
     const buttonElement = screen.getByRole("button");
-    expect(buttonElement).toHaveStyle(" background-color: black;");
+    expect(buttonElement).toHaveStyle(" background-color: rgb(0, 0, 0);");
   });
   test("should render inverted button when passed inverted button type", () => {
     render(<Button buttonType={BUTTON_TYPE_CLASSES.inverted}/>);
 
     const buttonElement = screen.getByRole("button");
-    expect(buttonElement).toHaveStyle(" background-color: white;");
+    expect(buttonElement).toHaveStyle(" background-color: rgb(255, 255, 255);");
   });
   test("should render google button when passed google button type", () => {
     render(<Button buttonType={BUTTON_TYPE_CLASSES.google}/>);
